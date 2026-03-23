@@ -30,14 +30,24 @@
     {\global\toggletrue{bbx@capibid}}
     {\togglefalse{bbx@capibid}}}
 
+% OSCOLA 5 s 1.2.3: ibid is no longer used by default.
+% Set ibid=true to restore OSCOLA 4 behaviour.
+\newtoggle{bbx@useibid}% Global control: use ibid (default false = OSCOLA 5)
+\DeclareBibliographyOption{ibid}[true]{%
+  \ifstrequal{#1}{true}
+    {\global\toggletrue{bbx@useibid}}
+    {\global\togglefalse{bbx@useibid}}}
+
 \newtoggle{bbx@ecliuse}\newtoggle{bbx@eclionly}
-\DeclareBibliographyOption{ecli}[add]{%
+\DeclareBibliographyOption{ecli}[only]{%
   \ifstrequal{#1}{no}
     {\global\togglefalse{bbx@ecliuse}\global\togglefalse{bbx@eclionly}}
     {\global\toggletrue{bbx@ecliuse}
      \ifstrequal{#1}{only}
        {\global\toggletrue{bbx@eclionly}}
        {}}}
+% OSCOLA 5: ECLI-only is the default; user can pass ecli=add or ecli=no.
+\ExecuteBibliographyOptions{ecli=only}
 
 \newcommand{\bbx@juriscitationindexlist}{}
 \listadd{\bbx@juriscitationindexlist}{{eu}{eujuriscitation:index}}
@@ -67,6 +77,7 @@
 
 % The bibliography and citation styles use different forms of name
 \AtBeginBibliography{%
+  \renewcommand{\finentrypunct}{}%  % OSCOLA 5: no terminal full stop in bibliography
   \toggletrue{abx@bool@giveninits}%
   \DeclareNameAlias{default}{family-given}%
   \DeclareNameAlias{editor}{given-family}}
@@ -200,6 +211,10 @@
 \newcommand\subtypedatabase{database}
 \newcommand\subtypeblog{blog}
 \newcommand\subtypelistmessage{listmessage}
+\newcommand\subtypepodcast{podcast}% OSCOLA 5
+\newcommand\subtypesocialmedia{socialmedia}% OSCOLA 5
+\newcommand\subtypebookreview{bookreview}% OSCOLA 5
+\newcommand\subtypeai{ai}% OSCOLA 5
 \newcommand\subtypebooklike{book}
 \newcommand\subtypepublicdocument{gov}
 \newcommand\authortypeanon{anonymous}
@@ -369,7 +384,11 @@
 \DeclareFieldFormat{postnote:old}{%
   \ifentrytype{legislation}%
    {\usebibmacro{legref}}%
-   {\mkpageprefix[pagination]{#1}}}
+   {% OSCOLA 5: timestamp pinpoints for audio/video (e.g. 42:41–51:17)
+    % Set pagination={timestamp} in the entry to pass through as-is
+    \iffieldequalstr{pagination}{timestamp}%
+      {#1}%
+      {\mkpageprefix[pagination]{#1}}}}
 \DeclareFieldFormat{paragraphed}{\formatpostnote{#1}}
 \DeclareFieldFormat{postnote}{#1}
 \DeclareFieldFormat{multipostnote}{#1}
@@ -401,7 +420,7 @@
 \DeclareFieldFormat[online]{title}{\mkbibquote{#1}}
 \DeclareFieldFormat[online]{note}{#1}
 \DeclareFieldFormat[online]{journaltitle}{\textit{#1}}
-\DeclareFieldFormat[thesis]{title}{\mkbibquote{#1}}
+\DeclareFieldFormat[thesis]{title}{\mkbibemph{#1}}% OSCOLA 5: thesis titles italicised
 \DeclareFieldFormat[misc]{title}{#1}
 \DeclareFieldFormat[misc]{journaltitle}{\mkbibquote{#1}}
 \DeclareFieldFormat[misc]{pages}{\mkfirstpage*{#1}}
@@ -466,6 +485,9 @@
   \usebibmacro{addendum+pubstate}%
   \setunit{\bibpagerefpunct}%
   \usebibmacro{pageref}%
+  \iffieldequals{entrysubtype}{\subtypebookreview}%
+    {\setunit{\addspace}\printtext{\mkbibparens{\bibstring{bookreview}}}}%
+    {}%
   \usebibmacro{finentry}}
 
 \DeclareBibliographyDriver{book}{%
@@ -680,18 +702,32 @@
 \DeclareBibliographyDriver{online}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
-  \usebibmacro{author/editor+others/translator+others}%
-  \setunit{\addcomma\space}%
-  \newblock
-  \usebibmacro{online:title}%
-  \newunit
-  \usebibmacro{publicationinfo:online}%
-  \newunit\newblock%
-  \usebibmacro{doi+eprint+url}%
-  \newunit\newblock
-  \setunit{\bibpagerefpunct}\newblock
-  \newunit%
-  \usebibmacro{pageref}%
+  \iffieldequals{entrysubtype}{\subtypesocialmedia}%
+    {\usebibmacro{online:socialmedia}}%
+    {\iffieldequals{entrysubtype}{\subtypepodcast}%
+       {\usebibmacro{online:podcast}}%
+       {\iffieldequals{entrysubtype}{\subtypeai}%
+          {\usebibmacro{online:ai}}%
+          {\usebibmacro{author/editor+others/translator+others}%
+        \setunit{\addcomma\space}%
+        \newblock
+        \usebibmacro{online:title}%
+        \newunit
+        \usebibmacro{publicationinfo:online}%
+        % OSCOLA 5: timestamp postnote appears after the date parens, before URL.
+        \ifboolexpr{not test {\iffieldundef{postnote}}
+                    and test {\iffieldequalstr{pagination}{timestamp}}}%
+          {\setunit{\addspace}%
+           \printfield[postnote:old]{postnote}%
+           \global\toggletrue{cbx@postnoteprinted}}%
+          {}%
+        \bbx@resetpostnotedelim
+        \newunit\newblock%
+        \usebibmacro{doi+eprint+url}%
+        \newunit\newblock
+        \setunit{\bibpagerefpunct}\newblock
+        \newunit%
+        \usebibmacro{pageref}}}}%
   \usebibmacro{finentry}}
 
 \DeclareBibliographyDriver{patent}{%
@@ -1019,7 +1055,22 @@
                                  \usebibmacro{unrep:date}}}%
          \bbx@unsetpostnotedelim}%
     }%
-    {\bbx@resetpostnotedelim}}
+    {% Has a medium neutral citation (number field)
+     % For Scottish Court of Session cases, print (IH)/(OH) only when the
+     % neutral citation does not already identify the division (CSIH/CSOH).
+     \ifboolexpr{ test {\ifkeyword{sc}} or test {\iftoggle{bbx:scotstyle}} }%
+       {\iflistundef{institution}%
+          {\bbx@resetpostnotedelim}%
+          {\edef\bbx@tempnumber{\thefield{number}}%
+           \in@{CSIH}{\bbx@tempnumber}%
+           \ifin@
+             {\bbx@resetpostnotedelim}%
+             {\in@{CSOH}{\bbx@tempnumber}%
+              \ifin@
+                {\bbx@resetpostnotedelim}%
+                {\printtext{\mkbibparens{\printlist{institution}}}%
+                 \bbx@unsetpostnotedelim}}}}%
+       {\bbx@resetpostnotedelim}}}
 
 \newbibmacro*{courtrules}{%
   \restorefield{prenote}{\postnotesecond}%
@@ -1035,10 +1086,12 @@
   \newblock\newunit
   \iffieldundef{postnote}%
     {\bbx@unsetpostnotedelim}
-    {\iffieldequalstr{shorttitle}{CPR}
-           {\printfield{postnote}\newunit}
-           {\printtext{\bibstring{order}\space%
-            \printfield{postnote}\setunit{\addcomma\space}}}}%
+    {\ifboolexpr{ test {\iffieldequalstr{shorttitle}{CPR}}
+                  or test {\iffieldequalstr{shorttitle}{CrPR}}
+                  or test {\iffieldequalstr{shorttitle}{FPR}} }%
+         {\printfield{postnote}\newunit}%
+         {\printtext{\bibstring{order}\space%
+          \printfield{postnote}\setunit{\addcomma\space}}}}%
   \restorefield{postnote}{\postnotesecond}%
   \usebibmacro{postnote}%
   \global\toggletrue{cbx@postnoteprinted}%
@@ -1253,9 +1306,20 @@
 }
 
 \newbibmacro{eulegislation}{%
+  % OSCOLA 5: assimilated EU law retained in UK domestic law post-Brexit
+  \ifkeyword{assimilated}%
+    {\printtext{\bibstring{assimilated}\addspace}}%
+    {}%
   \printfield[default]{title}%
   \newunit\newblock%
   \usebibmacro{eulegref}%
+  \ifkeyword{assimilated}%
+    {\iffieldundef{note}%
+       {}%
+       {\setunit{\addcomma\addspace}%
+        \printtext{\bibstring{asamendedby}\addspace}\printfield[default]{note}%
+        \clearfield{note}}}% prevent legislation:note from reprinting it
+    {}%
   \newunit\newblock%
   \usebibmacro{doi+eprint+url}}
 
@@ -1270,8 +1334,10 @@
            {\printtext{L}}%
            {\printfield[default]{series}}%
          \usebibmacro{issue/volume}%
-         \printtext{\slash}%
-         \printfield{pages}%
+         \iffieldundef{pages}% As post-2025 EU OJ entries do not have page numbers
+           {}%
+           {\printtext{\slash}%
+            \printfield{pages}}%
          \bbx@resetpostnotedelim}
         {\usebibmacro{year+vol+report}}}
 
@@ -1435,12 +1501,8 @@
   \iffieldequals{entrysubtype}{\subtypenewsp}
     {\printfield[newstitle]{journaltitle}%
      \newunit
-     \printtext{\mkbibparens{%
-       \iflistundef{location}
-         {}%
-         {\printlist{location}%
-          \setunit{\addcomma\space}}%
-       \usebibmacro{date}}}\newunit}
+     % OSCOLA 5: city of publication no longer required for newspaper articles
+     \printtext{\mkbibparens{\usebibmacro{date}}}\newunit}
   {\usebibmacro{journaldate}%
   \newunit
   \usebibmacro{volume+number+eid}%
@@ -2121,9 +2183,22 @@
   {\printfield{url}%
   \iffieldundef{urlyear}
     {}%
-    {\setunit*{\addspace}%
-     \bbx@resetpostnotedelim%
-     \printtext{\printurldate}}}}
+    {% OSCOLA 5: suppress 'accessed' date for Perma.cc archived URLs.
+     % URL fields are stored verbatim (all chars catcode 12), so the search
+     % string must also be catcode 12.  \detokenize normalises both sides so
+     % that \in@ can find "perma.cc" regardless of original catcodes.
+     % \ifin@ is a plain TeX conditional requiring \else...\fi syntax.
+     \edef\bbx@tempurl{\thefield{url}}%
+     \edef\bbx@urlcheck{%
+       \noexpand\in@
+         {\detokenize{perma.cc}}%
+         {\expandafter\detokenize\expandafter{\bbx@tempurl}}}%
+     \bbx@urlcheck
+     \ifin@\else
+       \setunit*{\addspace}%
+       \bbx@resetpostnotedelim%
+       \printtext{\printurldate}%
+     \fi}}}
 
 \newbibmacro{usjuriscitation}{%
  \usebibmacro{title}%
@@ -2185,6 +2260,66 @@
     {}
     {\bbx@pubinfoprint
      \printfield{journaltitle}}}
+
+% OSCOLA 5: Social media posts
+% Fields: author (username/name), journaltitle (platform, italicised),
+%         date (post date), note (time and timezone), url
+\newbibmacro*{online:socialmedia}{%
+  \usebibmacro{author/editor+others/translator+others}%
+  \setunit{\addspace}%
+  \printtext{\mkbibparens{%
+    \iffieldundef{journaltitle}{}{\printfield{journaltitle}}%
+    \iffieldundef{year}{}{\setunit{\addcomma\space}\printdate}%
+    \iffieldundef{note}{}{\setunit{\addcomma\space}\printfield{note}}}}%
+  \newunit\newblock%
+  \usebibmacro{doi+eprint+url}}
+
+% OSCOLA 5: Generative AI outputs (s 3.7.13)
+% Format: AI-name, response to 'instructions', Organisation (date).
+% Fields: author (AI name), title (instructions/prompt),
+%         publisher (organisation), date (generation date)
+\newbibmacro*{online:ai}{%
+  \usebibmacro{author/editor+others/translator+others}%
+  \setunit{\addcomma\space}%
+  \printtext{response to}\addspace%
+  \printfield{title}%
+  \setunit{\addcomma\space}%
+  \iflistundef{publisher}%
+    {}%
+    {\printlist{publisher}\addspace}%
+  \iffieldundef{year}%
+    {}%
+    {\printtext{\mkbibparens{\printdate}}}%
+  \bbx@resetpostnotedelim}
+
+% OSCOLA 5: Podcasts
+% Format: series/author, 'title' (series-if-author-present, date) postnote <url>
+% When no personal author, journaltitle (the series name) takes the author position.
+% The timestamp postnote is printed after the closing paren and before the URL.
+\newbibmacro*{online:podcast}{%
+  \ifnameundef{author}%
+    {\iffieldundef{journaltitle}%
+       {}%
+       {\printfield{journaltitle}%
+        \setunit{\addcomma\space}}}%
+    {\usebibmacro{author/editor+others/translator+others}%
+     \setunit{\addcomma\space}}%
+  \iffieldundef{title}{}{\printfield{title}}%
+  \newunit
+  \printtext{\mkbibparens{%
+    \ifnameundef{author}%
+      {\iffieldundef{year}{}{\printdate}}%
+      {\iffieldundef{journaltitle}{}{\printfield{journaltitle}}%
+       \iffieldundef{year}{}{\setunit{\addcomma\space}\printdate}}}}%
+  % Postnote (timestamp) appears after the closing paren, before the URL.
+  \iffieldundef{postnote}%
+    {}%
+    {\setunit{\addspace}%
+     \printfield[postnote:old]{postnote}%
+     \global\toggletrue{cbx@postnoteprinted}}%
+  \bbx@resetpostnotedelim
+  \newunit\newblock%
+  \usebibmacro{doi+eprint+url}}
 
 
 \newbibmacro*{year}[1][]{%

@@ -162,21 +162,23 @@ pip-log.txt
 # Mac crap
 .DS_Store
 
-# TeX Stuff
+# TeX / LaTeX build artefacts
+build/
 *.aux
-*.ind
-*.idx
 *.bbl
+*.bbl-SAVE-ERROR
 *.bcf
-*.toc
 *.blg
+*.idx
+*.ilg
+*.ind
 *.log
 *.out
 *.pdf
 *.run.xml
-*.ilg
-internaltest.*
 *.synctex.gz
+*.toc
+internaltest.*
 
 #EMACS
 \#*#

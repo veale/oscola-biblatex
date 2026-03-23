@@ -73,6 +73,35 @@
   pagination     = {section},
 }
 
+@legislation{transplantation13,
+  title          = {Deddf Trawsblannu Dynol (Cymru)},
+  date           = {2013},
+  number         = {dccc 5},
+  keywords       = {cy},
+  entrysubtype   = {primary},
+  pagination     = {section},
+  language       = {welsh},
+}
+
+@legislation{abolition20,
+  title          = {Child (Abolition of Defence of Reasonable
+                    Punishment) (Wales) Act},
+  date           = {2020},
+  number         = {anaw 3},
+  keywords       = {cy},
+  entrysubtype   = {primary},
+  pagination     = {section},
+}
+
+@legislation{welshtax22,
+  title          = {Welsh Tax Acts etc (Power to Modify) Act},
+  date           = {2022},
+  number         = {asc 2},
+  keywords       = {cy},
+  entrysubtype   = {primary},
+  pagination     = {section},
+}
+
 @legislation{gorchymyn,
   title          = {Gorchymyn Mesur Teithio gan Ddysgwyr (Cymru)
                     (Cychwyn Rhif 2)\nopunct},
@@ -265,12 +294,13 @@
   keywords       = {eu},
   title          = {Jereon van Schijndel v Stichting Pensioenfonds voor Fysiotherapeuten},
   shorttitle     = {van Schijndel},
-  number         = {C-430/93--C-431/93},
+  number         = {C-430/93 and C-431/93},
   institution    = {ECJ},
   reporter       = {ECR},
   volume         = {I},
   date           = {1998},
   pages          = {4705},
+  ecli           = {EU:C:1995:441}
 }
 
 @jurisdiction{T344/99,
@@ -558,7 +588,6 @@
   title =	 {Supreme Court Warns on Quality},
   author =	 {Jane Croft},
   journaltitle = {Financial Times},
-  location =	 {London},
   date =	 {2010-07-01},
   pages =	 3,
   entrysubtype = {newspaper},
@@ -1104,8 +1133,20 @@
   url =		 {http://www.law.ox.ac.uk/oscola},
   date =	 2010,
   edition =	 4,
-  shorthand =	 {{{\scshape oscola}}},
+  shorthand =	 {{{\scshape oscola~4}}},
 }
+
+@book{oscola5,
+  title =	 {OSCOLA},
+  subtitle =	 {Oxford Standard for the Citation of Legal
+                  Authorities},
+  author =	 {{Faculty of Law, University of Oxford}},
+  url =		 {http://www.law.ox.ac.uk/oscola},
+  date =	 2026,
+  edition =	 5,
+  shorthand =	 {{{\scshape oscola~5}}},
+}
+
 @online{cole09,
   title        = {Virtual Friend Fires Employee},
   journaltitle = {Naked Law},
@@ -1530,4 +1571,219 @@ volume = 31,
 journaltitle = {I.L.M.},
 pages = 1501,
 entrysubtype = {undoc},
+}
+
+%% ---------------------------------------------------------------
+%% FAKE ENTRIES for testing OSCOLA 5 features
+%% All names, titles and URLs below are entirely fictitious.
+%% ---------------------------------------------------------------
+
+% Change 6b: Podcast (OSCOLA 5 s 3.7.2)
+% Expected: Joe Bloggs, 'Making Up the Law' (The Fictitious Law Pod,
+%           1 April 2023) 27:14--35:22 <https://perma.cc/FAKE-PCST>
+% Cite as: \cite[27:14--35:22]{bloggs:podcast23}
+@online{bloggs:podcast23,
+  entrysubtype = {podcast},
+  author       = {Bloggs, Joe},
+  title        = {Making Up the Law},
+  journaltitle = {The Fictitious Law Pod},
+  date         = {2023-04-01},
+  pagination   = {timestamp},
+  url          = {https://perma.cc/FAKE-PCST},
+  urldate      = {2023-12-01},
+}
+
+% Change 6c: Social media post (OSCOLA 5 s 3.7.1)
+% OSCOLA 5 manual example: social media post with account-name author.
+% Expected: @The Criminal Bar (Twitter, 26 June 2023, 9:13pm GMT+1)
+%           <https://perma.cc/HD6K-3GZQ>.  [no 'accessed' date: perma.cc URL]
+@online{criminalbar:tweet23,
+  entrysubtype = {socialmedia},
+  author       = {{@The Criminal Bar}},
+  journaltitle = {Twitter},
+  date         = {2023-06-26},
+  note         = {9:13pm GMT+1},
+  url          = {https://perma.cc/HD6K-3GZQ},
+}
+
+% Change 6e: Book review (OSCOLA 5 s 3.5)
+% Expected: Jane Bloggs, [title] [journal info] (book review)
+@article{bloggs:review23,
+  entrysubtype = {bookreview},
+  author       = {Bloggs, Jane},
+  title        = {A Really Rather Good Book},
+  journaltitle = {LQR},
+  volume       = {139},
+  date         = {2023},
+  pages        = {567},
+}
+
+% Change 7: Timestamp pinpoint (OSCOLA 5 s 3.1.3)
+% Cite as: \footcite[42:41--51:17]{lynskey:lecture26}
+% Expected: postnote printed as timestamp, not formatted as page number}
+
+@online{lynskey:lecture26,
+  author       = {Lynskey, Orla},
+  title        = {CLP - Effective or Complete Data Protection},
+  journaltitle = {YouTube},
+  date         = {2023-03-04},
+  url          = {https://www.youtube.com/watch?v=KhwW2zF6faI},
+  urldate      = {2026-03-01},
+  pagination   = {timestamp},
+}
+
+
+% OSCOLA 5 manual example: podcast with no personal author
+% Expected: Double Jeopardy podcast, 'Episode 27: Dr Bryn Harris -- Free Speech,
+%           Harm and the Internet' (7 April 2023) 3:40--3:56
+%           <https://podcasts.apple.com/...> accessed 21 July 2023.
+% Cite as: \cite[3:40--3:56]{doublejeopardy:ep27}
+@online{doublejeopardy:ep27,
+  entrysubtype = {podcast},
+  author       = {{Double Jeopardy podcast}},
+  title        = {Episode 27: Dr Bryn Harris -- Free Speech, Harm and the Internet},
+  date         = {2023-04-07},
+  url          = {https://podcasts.apple.com/gb/podcast/double-jeopardy/id1633485236?i=1000607857832},
+  urldate      = {2023-07-21},
+  pagination   = {timestamp},
+}
+
+% OSCOLA 5 manual example: book review — AG Guest
+% Expected: AG Guest, 'An Introduction to the Law of Contract' (1961) 24 MLR 658
+%           (book review).
+@article{guest:1961,
+  entrysubtype = {bookreview},
+  author       = {Guest, A G},
+  title        = {An Introduction to the Law of Contract},
+  journaltitle = {MLR},
+  volume       = {24},
+  date         = {1961},
+  pages        = {658},
+}
+
+% OSCOLA 5 manual example: book review — Donal Nolan
+% Expected: Donal Nolan, 'Enterprise Liability and the Common Law' (2012) 41 ILJ
+%           370 (book review).
+@article{nolan:2012,
+  entrysubtype = {bookreview},
+  author       = {Nolan, Donal},
+  title        = {Enterprise Liability and the Common Law},
+  journaltitle = {ILJ},
+  volume       = {41},
+  date         = {2012},
+  pages        = {370},
+}
+
+% Change 7b: Timestamp pinpoint — OSCOLA 5 manual example (YouTube)
+% Expected: UK Supreme Court, 'Lady Hale's Valedictory Remarks – 18 December 2019'
+%           (YouTube, 18 December 2019) 42:41--51:17 <https://perma.cc/7YZV-Y43A>.
+% Cite as: \cite[42:41--51:17]{uksc:hale19}
+@online{uksc:hale19,
+  author       = {{UK Supreme Court}},
+  title        = {Lady Hale's Valedictory Remarks -- 18 December 2019},
+  journaltitle = {YouTube},
+  date         = {2019-12-18},
+  url          = {https://perma.cc/7YZV-Y43A},
+  pagination   = {timestamp},
+}
+
+% Change 8: Perma.cc URL — 'accessed' date should be suppressed
+% OSCOLA 5 manual example.
+% Expected: Cyclefree, 'Is This Really Necessary, Minister?' (Legal Feminist,
+%           27 April 2023) <https://perma.cc/3THK-P4AX>.  [NO 'accessed' text]
+@online{cyclefree:2023,
+  author       = {{Cyclefree}},
+  title        = {Is This Really Necessary, Minister?},
+  journaltitle = {Legal Feminist},
+  date         = {2023-04-27},
+  url          = {https://perma.cc/3THK-P4AX},
+  urldate      = {2023-07-21},
+}
+
+% OSCOLA 5 s 3.7.13: Generative AI outputs
+% Expected: ChatGPT, response to 'Explain how artificial intelligence works',
+%           OpenAI (16 July 2023).
+@online{chatgpt:ai23a,
+  entrysubtype = {ai},
+  author       = {{ChatGPT}},
+  title        = {Explain how artificial intelligence works},
+  publisher    = {OpenAI},
+  date         = {2023-07-16},
+}
+
+% Expected: ChatGPT, response to 'How to cite ChatGPT in the style of OSCOLA',
+%           OpenAI (16 July 2023).
+@online{chatgpt:ai23b,
+  entrysubtype = {ai},
+  author       = {{ChatGPT}},
+  title        = {How to cite ChatGPT in the style of OSCOLA},
+  publisher    = {OpenAI},
+  date         = {2023-07-16},
+}
+
+% Change 10: CrPR — Criminal Procedure Rules (OSCOLA 5 s 2.5.3)
+@legislation{crpr2020,
+  title        = {Criminal Procedure Rules},
+  shorttitle   = {CrPR},
+  keywords     = {en},
+  entrysubtype = {procedure-rule},
+  date         = {2020},
+  pagination   = {rule},
+}
+
+% Change 10: FPR — Family Procedure Rules (OSCOLA 5 s 2.5.3)
+@legislation{fpr2010,
+  title        = {Family Procedure Rules},
+  shorttitle   = {FPR},
+  keywords     = {en},
+  entrysubtype = {procedure-rule},
+  date         = {2010},
+  pagination   = {rule},
+}
+
+% Change 11: Assimilated EU legislation (OSCOLA 5 s 2.4.9)
+% Expected: Assimilated Regulation (EC) No 593/2008 ... [OJ ref]
+%           as amended by SI 2019/834, reg 10
+@legislation{rome1assimilated,
+  title        = {Regulation (EC) No 593/2008 of the European Parliament
+                  and of the Council of 17 June 2008 on the law applicable
+                  to contractual obligations},
+  type         = {regulation},
+  entrysubtype = {regulation},
+  number       = {593/2008},
+  journaltitle = {OJ},
+  series       = {L},
+  volume       = {177},
+  pages        = {6},
+  date         = {2008},
+  keywords     = {eu, assimilated},
+  note         = {SI 2019/834, reg 10},
+}
+
+% EU regulation with no page number (new OJ format post-2015)
+% Expected: Regulation (EU) 2025/783 ... [2025] OJ L.
+@legislation{eu2025:tariffs,
+  title        = {Regulation (EU) 2025/783 of the European Parliament and of
+                  the Council of 14 April 2025 amending Regulation (EU)
+                  2018/196 on additional customs duties on imports of certain
+                  products originating in the United States of America},
+  type         = {regulation},
+  entrysubtype = {regulation},
+  number       = {2025/783},
+  journaltitle = {OJ},
+  series       = {L},
+  date         = {2025},
+  keywords     = {eu},
+}
+
+% Change 12: Scottish Court of Session — CSIH/CSOH neutral citation implies the division
+% Expected: Ponticelli Ltd v Gallagher [2023] CSIH 32, 2023 SLT 823
+@jurisdiction{ponticelli23,
+  title        = {Ponticelli Ltd v Gallagher},
+  number       = {[2023] CSIH 32},
+  date         = {2023},
+  reporter     = {SLT},
+  pages        = {823},
+  keywords     = {sc},
+  options      = {year-essential=true},
 }

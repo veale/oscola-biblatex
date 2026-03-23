@@ -46,6 +46,8 @@
 	  not test {\iffirstonpage}
           and
           not test {\iftoggle{bbx:suppressibid}}
+          and
+          test {\iftoggle{bbx@useibid}}
         }
           {\usebibmacro{cite:ibid}}
           {\usebibmacro{cite:short}}}
@@ -59,7 +61,8 @@
   \ifboolexpr {test {\ifciteseen} or test {\ifciteibid}}
     {\ifboolexpr {test {\iffieldundef{shorthand}} 
                   or test {\bbx@ifnottrackingcites}}
-       {\ifthenelse{\ifciteibid\AND\NOT\iffirstonpage}
+       {\ifboolexpr{ test {\ifciteibid} and not test {\iffirstonpage}
+                     and test {\iftoggle{bbx@useibid}} }%
           {\usebibmacro{footcite:ibid}\bbx@unsetpostnotedelim}
           {\usebibmacro{footcite:note}}}%
        {\usebibmacro{footcite:shorthand}}}
@@ -214,7 +217,8 @@
   \bbx@resetpostnotedelim%
   \usebibmacro{citeindex}%
   \ifboolexpr {test {\ifciteseen} or test {\ifciteibid}}
-       {\ifthenelse{\ifciteibid\AND\NOT\iffirstonpage}
+       {\ifboolexpr{ test {\ifciteibid} and not test {\iffirstonpage}
+                     and test {\iftoggle{bbx@useibid}} }%
           {\footnote{\bibfootnotewrapper{\gdef\blx@postpunct@saved{}\usebibmacro{footcite:ibid}\midsentence\bbx@unsetpostnotedelim\usebibmacro{postnote}}}}
           {\footnote{\bibfootnotewrapper{\gdef\blx@postpunct@saved{}\usebibmacro{cite:refonlynote}\usebibmacro{postnote}}}}}%
     {\footnote{\bibfootnotewrapper{\gdef\blx@postpunct@saved{}\usebibmacro{cite:refonlyfull}\usebibmacro{postnote}%

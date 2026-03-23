@@ -1,29 +1,42 @@
 \documentclass[12pt]{article}
-\usepackage[style=oscola,terseinits=true]{biblatex}
-\usepackage[style=british]{csquotes}
+% fontenc and inputenc must precede biblatex/csquotes (pdflatex).
+% With lualatex these are harmless no-ops.
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+% babel (british) activates british-oscola.lbx and its bibliography strings.
+\usepackage[british]{babel}
+\usepackage[style=oscola,terseinits=true]{biblatex}
+\usepackage[style=british]{csquotes}
 
 \newcommand{\model}{%
   \par\strut\llap{*~}}
+
+% Helper: label for model output vs package output
+\newcommand{\expected}[1]{\par\textbf{Expected:} #1}
+\newcommand{\pkg}{\par\textbf{Package:} }
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{1ex}
 
 \addbibresource{oscola-examples.bib}
 
-\title{OSCOLA Test Document}
+\title{OSCOLA Test Document\\
+  \large Testing OSCOLA 4 (existing) and OSCOLA 5 (new) features}
+\author{}
 
 \begin{document}
 
 \maketitle
 
-This document contains, one above the other, a handwritten canonically
-correct example of various entry-types, as given in
-\citetitle{oscola}\footcite{oscola} and the \texttt{oscola} version
-for comparison.
+This document tests both the existing entry-types from OSCOLA 4 and
+the new features added for OSCOLA~5 compliance.  Each section shows
+the expected output above the package's actual output.
 
-\section{Books}
+% ==============================================================
+\section{Existing features (regression tests)}
+% ==============================================================
+
+\subsection{Books}
 
 \model Andrew Burrows, \emph{Remedies for Torts and Breach of
   Contract} (3rd edn, OUP 2004) 317.
@@ -45,7 +58,7 @@ for comparison.
 
 [NB The above uses \texttt{crossref} in the \texttt{.bib} file.]
 
-\section{Cases}
+\subsection{Cases}
 
 \model \emph{Boulton v Jones} (1857) 2 H\&N 564, 157 ER 232.
 
@@ -55,6 +68,300 @@ for comparison.
 1001.
 
 \cite[107|1001]{henly28}.
+
+% ==============================================================
+\section{OSCOLA 5 changes}
+% ==============================================================
+
+% ---------------------------------------------------------------
+\subsection{Ibid abolished by default (OSCOLA 5 s~1.2.3)}
+% ---------------------------------------------------------------
+
+Repeated citations of the same source should produce the short-form
+cross-citation, not \emph{ibid}.  The second footnote below must
+\emph{not} read `ibid'.
+
+\expected{%
+  \textsuperscript{n}~Burrows (n~[prev]) 100.%
+}
+
+\pkg
+\footcite[317]{burrows04}%
+\footcite[100]{burrows04}.
+
+To restore OSCOLA~4 ibid behaviour, pass \texttt{ibid=true} as a
+package option.
+
+% ---------------------------------------------------------------
+\subsection{Thesis titles italicised (OSCOLA 5 s~3.7.6)}
+% ---------------------------------------------------------------
+
+\expected{%
+  Javan Herberg, \emph{Injunctive Relief for Wrongful Termination of
+  Employment} (DPhil thesis, University of Oxford 1989).%
+}
+
+\pkg
+\cite{herberg89}.
+
+% ---------------------------------------------------------------
+\subsection{Newspaper articles — no city (OSCOLA 5 s~3.7.7)}
+% ---------------------------------------------------------------
+
+\expected{%
+  Jane Croft, `Supreme Court Warns on Quality'
+  \emph{Financial Times} (1 July 2010) 3.%
+}
+
+(The city `London' must \emph{not} appear.)
+
+\pkg
+\cite{croft}.
+
+% ---------------------------------------------------------------
+\subsection{ECLI as default for EU cases (OSCOLA 5 s~4.4.2)}
+% ---------------------------------------------------------------
+
+\expected{%
+  Joined Cases~C-430/93 and C-431/93 \emph{Jereon van Schijndel v Stichting Pensioenfonds voor Fysiotherapeuten}
+  EU:C:1995:441.%
+}
+
+(The ECR citation must \emph{not} appear when an ECLI is available.)
+
+\pkg
+\cite{C430/93}.
+
+% ---------------------------------------------------------------
+\subsection{Podcasts (OSCOLA 5 s~3.7.2)}
+% ---------------------------------------------------------------
+
+\expected{%
+  Joe Bloggs, `Making Up the Law'
+  (\emph{The Fictitious Law Pod}, 1 April 2023) 27:14--35:22
+  \textlangle{}https://perma.cc/FAKE-PCST\textrangle.%
+}
+
+(No `accessed' date: Perma.cc URL. Timestamp appears after the date parens.)
+
+\pkg
+\cite[27:14--35:22]{bloggs:podcast23}.
+
+% ---------------------------------------------------------------
+\subsection{Social media posts (OSCOLA 5 s~3.7.1)}
+% ---------------------------------------------------------------
+
+\expected{%
+  @The Criminal Bar (\emph{Twitter}, 26 June 2023, 9:13pm GMT+1)
+  \textlangle{}https://perma.cc/HD6K-3GZQ\textrangle.%
+}
+
+(No `accessed' date: Perma.cc URL.)
+
+\pkg
+\cite{criminalbar:tweet23}.
+
+% ---------------------------------------------------------------
+\subsection{Book reviews (OSCOLA 5 s~3.5)}
+% ---------------------------------------------------------------
+
+\expected{%
+  AG Guest, `An Introduction to the Law of Contract'
+  (1961) 24 MLR 658 (book review).%
+}
+
+\pkg
+\cite{guest:1961}.
+
+\expected{%
+  Donal Nolan, `Enterprise Liability and the Common Law'
+  (2012) 41 ILJ 370 (book review).%
+}
+
+\pkg
+\cite{nolan:2012}.
+
+% ---------------------------------------------------------------
+\subsection{Timestamp pinpoints (OSCOLA 5 s~3.1.3)}
+% ---------------------------------------------------------------
+
+The timestamp postnote must appear after the date parenthesis and
+before the URL (not at the end of the citation).
+
+\expected{%
+  UK Supreme Court, `Lady Hale's Valedictory Remarks -- 18 December 2019'
+  (\emph{YouTube}, 18 December 2019) 42:41--51:17
+  \textlangle{}https://perma.cc/7YZV-Y43A\textrangle.%
+}
+
+\pkg
+\cite[42:41--51:17]{uksc:hale19}.
+
+% ---------------------------------------------------------------
+\subsection{Perma.cc URLs — no `accessed' date
+  (OSCOLA 5 s~3.1.4)}
+% ---------------------------------------------------------------
+
+A \texttt{urldate} field is present in the entry but must be
+\emph{suppressed} because the URL begins with \texttt{perma.cc}.
+
+\expected{%
+  Cyclefree, `Is This Really Necessary, Minister?'
+  (\emph{Legal Feminist}, 27 April 2023)
+  \textlangle{}https://perma.cc/3THK-P4AX\textrangle.%
+}
+
+(No `accessed \ldots' text after the URL.)
+
+\pkg
+\cite{cyclefree:2023}.
+
+Compare with a non-Perma.cc URL where `accessed' should still appear:
+
+\expected{%
+  Sarah Cole, `Virtual Friend Fires Employee' \emph{Naked Law}
+  (1 May 2009) \textlangle{}\ldots\textrangle{} accessed 9 November 2009.%
+}
+
+\pkg
+\cite{cole09}.
+
+% ---------------------------------------------------------------
+\subsection{Court rules — CrPR and FPR (OSCOLA 5 s~2.5.3)}
+% ---------------------------------------------------------------
+
+CrPR and FPR should be cited without SI number, and with the rule
+number following directly (no `Order' prefix), just like CPR.
+
+\expected{%
+  CrPR r~17.}
+
+\pkg
+\cite[r~17]{crpr2020}.
+
+\expected{%
+  FPR r~4.1.}
+
+\pkg
+\cite[r~4.1]{fpr2010}.
+
+
+% ---------------------------------------------------------------
+\subsection{Assimilated EU law (OSCOLA 5 s~2.4.9)}
+% ---------------------------------------------------------------
+
+\expected{%
+  Assimilated Regulation (EC) No 593/2008 \ldots\ [2008] OJ L177/6,
+  as amended by SI 2019/834, reg~10.%
+}
+
+\pkg
+\cite{rome1assimilated}.
+
+% ---------------------------------------------------------------
+\subsection{Scottish Court of Session — CSIH/CSOH implies the division
+  (OSCOLA 5)}
+% ---------------------------------------------------------------
+
+When the neutral citation already names the division (CSIH or CSOH),
+no separate IH/OH identifier should appear.
+
+\expected{%
+  \emph{Ponticelli Ltd v Gallagher} [2023] CSIH 32, 2023 SLT 823.%
+}
+
+\pkg
+\cite{ponticelli23}.
+
+When there is no neutral citation, the IH/OH designation must appear.
+
+\expected{%
+  \emph{Adams v Advocate General} 2003 SC 171 (OH), 175.%
+}
+
+\pkg
+\cite[175]{adams03}.
+
+% ---------------------------------------------------------------
+\subsection{No terminal full stop in bibliography
+  (OSCOLA 5 s~1.7)}
+% ---------------------------------------------------------------
+
+Check that entries in the bibliography below do \emph{not} end with a
+full stop.
+
+\section{Other changes}
+
+% ---------------------------------------------------------------
+\subsection{EU legislation: no page number (new OJ format)}
+% ---------------------------------------------------------------
+
+Newer editions of the OJ do not carry page numbers.  The series letter
+(\texttt{L}, \texttt{C}, etc.)\ must appear without a trailing slash.
+
+\expected{%
+  Regulation (EU) 2025/783 of the European Parliament and of the Council
+  of 14 April 2025 amending Regulation (EU) 2018/196 on additional customs
+  duties on imports of certain products originating in the United States of
+  America [2025] OJ L.%
+}
+
+\pkg
+\cite{eu2025:tariffs}.
+
+% ---------------------------------------------------------------
+\subsection{Generative AI (OSCOLA 5 s~3.7.13)}
+% ---------------------------------------------------------------
+
+AI outputs: author is the AI name, prompt in inverted commas after
+`response to', then organisation and date in parens.  No italics anywhere.
+
+\expected{%
+  ChatGPT, response to `Explain how artificial intelligence works',
+  OpenAI (16 July 2023).%
+}
+
+\pkg
+\cite{chatgpt:ai23a}.
+
+\expected{%
+  ChatGPT, response to `How to cite ChatGPT in the style of OSCOLA',
+  OpenAI (16 July 2023).%
+}
+
+\pkg
+\cite{chatgpt:ai23b}.
+
+% ---------------------------------------------------------------
+\subsection{Welsh Parliament legislation — asc/anaw/dccc numbers}
+% ---------------------------------------------------------------
+
+Acts of the National Assembly for Wales (\texttt{anaw}/\texttt{dccc})
+and Welsh Parliament (\texttt{asc}) should print the number in
+parentheses after the title and year.
+
+\expected{%
+  Deddf Trawsblannu Dynol (Cymru) 2013 (dccc~5).%
+}
+
+\pkg
+\cite{transplantation13}.
+
+\expected{%
+  Child (Abolition of Defence of Reasonable Punishment) (Wales) Act 2020
+  (anaw~3).%
+}
+
+\pkg
+\cite{abolition20}.
+
+\expected{%
+  Welsh Tax Acts etc (Power to Modify) Act 2022 (asc~2).%
+}
+
+\pkg
+\cite{welshtax22}.
+
 
 \printbibliography
 

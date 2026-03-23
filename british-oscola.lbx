@@ -31,7 +31,10 @@
                        inforce,
                        adopted,
                        casenote,
-                       firstpublished}
+                       firstpublished,
+                       bookreview,
+                       assimilated,
+                       asamendedby}
 
 \DeclareBibliographyExtras{%
   \protected\def\bibrangedash{%
@@ -471,6 +474,7 @@
   idempf           = {{eaedem}{eaedem}},
   idempn           = {{eadem}{eadem}},
   idempp           = {{eidem}{eidem}},
+  % OSCOLA 5: 'ibid' is deprecated; retained for backward compatibility
   ibidem           = {{ibidem}{ibid}},
   opcit            = {{opspace cit}{opspace cit}},
   loccit           = {{locspace cit}{locspace cit}},
@@ -564,7 +568,11 @@
   opened           = {{opened for signature}{opened for signature}},
   adopted          = {{adopted}{adopted}},
   casenote         = {{note}{note}},
-  firstpublished   = {{first published}{first published}}, 
+  firstpublished   = {{first published}{first published}},
+  % OSCOLA 5 additions
+  bookreview       = {{book review}{book review}},% OSCOLA 5
+  assimilated      = {{Assimilated}{Assimilated}},% OSCOLA 5
+  asamendedby      = {{as amended by}{as amended by}},% OSCOLA 5
 }
 
 \endinput

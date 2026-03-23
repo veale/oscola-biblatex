@@ -1,5 +1,5 @@
-% This file documents the biblatex-oscola package. It is (c) Paul Stanley 2014-2017
-% and licensed under the Creative Commons Attribution 3.0-Unported License (CC BY 3.0). A copy of that
+% This file documents the biblatex-oscola package. It is (c) Paul Stanley 2014-2017; with further edits carried out by Michael Veale in 2026 for OSCOLA 5; both contributions are
+% licensed under the Creative Commons Attribution 3.0-Unported License (CC BY 3.0). A copy of that
 % license is available at
 %   http://creativecommons.org/licenses/by/3.0/deed.en_GB
 %
@@ -19,8 +19,8 @@
 	      {scrartcl}
 
 % SET VERSION NUMBER AND RELEASE DATE
-\def\releasedate{15 March 2019}
-\def\versionnumber{1.7}
+\def\releasedate{23 March 2026}
+\def\versionnumber{2}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \usepackage{geometry}
@@ -74,7 +74,7 @@
 \newcounter{egcounter}\setcounter{egcounter}{0}
 
 % TYPOGRAPHY
-\usepackage{scrpage2}
+\usepackage{scrlayer-scrpage}
 \usepackage[dvipsnames]{xcolor}
 
 % This code from Juanjo's answer at http://www.latex-community.org
@@ -188,7 +188,7 @@
 \title{The OSCOLA Biblatex Style}
 \subtitle{Version \versionnumber}
 
-\author{Paul Stanley\thanks{pstanley@essexcourt.net}}
+\author{Paul Stanley\thanks{pstanley@essexcourt.net}\\ Updated for OSCOLA 5 by Michael Veale\thanks{Professor of Technology Law and Policy, UCL, m.veale@ucl.ac.uk}}
 
 \date{\releasedate}
 
@@ -202,7 +202,7 @@
 
 \index[general]{scope of package|(}The \oscola\ style for \biblatex\
 is intended to implement more or less the whole of the standard for
-legal citations set out in the fourth edition of
+legal citations set out in the fifth edition of
 \oscolashort,\footcite{oscola} in a way that as far as possible
 respects the idea that bibliography databases should be style
 independent.\index[general]{scope of package|)} However, since it
@@ -220,11 +220,10 @@ itself.\footcite{oscola} Wherever possible I have taken examples from
 
 \subsection{Omissions\label{scope}}
 
-\index[general]{scope of package!international materials} The most
-recent edition of \oscolashort\ does not contain rules for formatting
+\index[general]{scope of package!international materials} The 4th edition of \oscolashort\ does not contain rules for formatting
 international law materials (other than \textsc{eu} materials and
 cases decided by the European Court of Human Rights). The 3rd edition
-contained extensive rules.\footcite[25--37]{oscola3} The \oscolashort\
+contained extensive rules,\footcite[25--37]{oscola3} and the 5th edition restores and extends those rules.\footcite[45--62]{oscola5} The \oscolashort\
 package offers \emph{basic} functionality for citing treaties and cases
 consistently with the third edition; but the package does not attempt
 to grapple with all the complexities, and might not be sufficient for
@@ -469,14 +468,13 @@ of `ibid' in successive citations.
   titles, will be printed in italic type.
 \item[ecli]\index[general]{ECLI numbers}
   \index[general]{options!ecli@\texttt{ecli}} This option controls
-  whether the EU's recently introduced ECLI numbers get
-  printed. Options are: \verb|yes| (the default), which means they are
-  printed when available in addition to the official report,
-  \verb|no|, in which case they are never printed, or \verb|only|, in
-  which case only ECLI numbers are used, with no printed report, in
-  the current style of the CJEU itself (not yet officially accepted by
-  the standard). Note that if the case is otherwise unreported, ECLI
-  numbers will always be used if available.
+  whether the EU's ECLI numbers get printed. Under \oscolashort\ 5, the
+  default is \verb|only|, in which case only the ECLI number is used.
+  The alternative options are: \verb|add|, which prints the ECLI
+  number in addition to any official report; and \verb|no|, in which
+  case ECLI numbers are never printed. Note that if the case is
+  otherwise unreported, ECLI numbers will always be used if
+  available.
 \item[ibidstyle]\index[general]{customization!ibid}
                 \index[general]{ibid!capitalization}
                 \index[general]{options!ibidstyle@\texttt{ibidstyle}}
@@ -492,16 +490,15 @@ of `ibid' in successive citations.
   if you are using capitals, you will need to insert the command
   \verb|\bibsentence| immediately before the \verb|\cite|. (This is a
   good reason to use \verb|\footcite| where you can.\label{ibidstyle})
-\item[\texttt{ibidtracker}] \index[general]{customization!ibid}
-  \index[general]{options!ibidtracker@\texttt{ibidtracker}}
-  \index[general]{ibid!disabling use of} \textsc{Oscola} permits
-  citations to use `ibid' where there is an unambiguous citation to a
-  single authority in the preceding footnote, but it is not
-  required.\footnote{`\ldots\ you \emph{can} generally use ``ibid''
-    instead' (emphasis added) \cite[5]{oscola}.} By default,
-  \oscola\ does use `ibid', where it is appropriate. But if you prefer
-  to switch it off, you can do so using the \biblatex\ option
-  \texttt{ibidtracker=false}.
+\item[\texttt{ibid}] \index[general]{customization!ibid}
+  \index[general]{options!ibid@\texttt{ibid}}
+  \index[general]{ibid!disabling use of} Under \oscolashort\ 5, the use of
+  `ibid' in citations is abolished by default. If you prefer to
+  restore the \oscolashort\ 4 behaviour, you can do so by passing
+  \texttt{ibid=true} when loading \biblatex.
+\item[\texttt{ibidtracker}] \index[general]{options!ibidtracker@\texttt{ibidtracker}}
+  If \texttt{ibid=true} is set, you can disable ibid tracking
+  individually using the \biblatex\ option \texttt{ibidtracker=false}.
 \item[\texttt{citetracker}]
                  \index[general]{customization!shortened citations}
                  \index[general]{options!citetracker@\texttt{citetracker}}
@@ -679,7 +676,10 @@ If your source is referred to by anything other than page number, it's a good id
 \item[article] For references in the form `art 1'.
 \item[section] For references in the form `s 1'.
 \item[rule] For references in the form `r 1'.
-\item[regulation] For references in the form `reg 1'
+\item[regulation] For references in the form `reg 1'.
+\item[timestamp] For references to audio or video material by time
+  code (eg `42:41--51:17'). The postnote will be printed as-is,
+  without any prefix.
 \end{description}
 
 \subsubsection{Slashes}
@@ -1909,12 +1909,20 @@ default English style for a UK case.
 
 \begin{description}
 \item[\egcite{\{hislop42\}}] \cite{hislop42}
-\item[\egcite{\{adams03\}}]  \cite{adams03}
+\item[\egcite{[175]\{adams03\}}] \cite[175]{adams03}
 \item[\egcite{\{dodds03\}}]  \cite{dodds03}
 \item[\egcite{[25]\{crofters02\}}] \cite[25]{crofters02}
 \item[\egcite{\{davidson05\}}] \cite{davidson05}
 \item[\egcite{\{smart06\}}] \cite{smart06}
 \end{description}
+
+Under OSCOLA~5, when a case has a Court of Session neutral citation
+(CSIH or CSOH), no separate Inner or Outer House designation is
+needed: the neutral citation already identifies the
+division.\index[general]{cases!Scottish!Inner House}\index[general]{cases!Scottish!Outer House}
+Where there is no neutral citation, use the \texttt{institution}
+field, set to \texttt{IH} or \texttt{OH}, as in example
+\ref{adams03}.
 
 \index[general]{cases!Scottish|)}
 
@@ -1949,9 +1957,9 @@ fields described in relation to English cases, but
   Journal. Follow the advice set out in relation to Commission
   decisions, below.
 \item[ecli]\index[general]{ECLI number}
-  The ECLI number for the case report. Note that whether the
-  number is used depends on the setting of the option \verb|ecli| to
-  \verb|yes| (the default), \verb|no|, or \verb|only|.
+  The ECLI number for the case report. Under OSCOLA~5, the default
+  is to use only the ECLI number. See the options section at
+  p~\pageref{options} for details.
 \item[pagination] You can, if you like, specify \texttt{paragraph};
   but if nothing is entered, paragraph will be assumed.
 \end{description}
@@ -2032,13 +2040,17 @@ can help to ensure proper linebreaking.
 \end{bibexample}
 
 \index[general]{cases!European Union!unreported}
-Example \ref{C556/07} shows a case that is not (yet) reported in the
-ECR reports, but available only in the Official Journal. Although
-\oscolashort\ suggests that in those circumstances the citation should
-be to OJ, my own view would be that in such cases it is probably
-better either to give an ECR reference with the pages set to 0000---as
-is very common practice---leaving it to the reader to find the case
-online, which is not difficult, or to give an online reference.
+Under OSCOLA~5, the preferred citation for any ECJ or General Court
+decision is the ECLI number (the default behaviour of this package).
+The question of how to handle cases not yet reported in the ECR is
+therefore largely moot: an ECLI number will be available for
+virtually all decisions and is sufficient on its own.
+
+Example \ref{C556/07} shows a case cited via the Official Journal,
+which was the approach suggested by earlier editions of
+\oscolashort\ for unreported cases. This is retained here as a
+historical note. If an ECLI number is available (as it will be for
+effectively all modern cases), use that instead and omit the OJ reference.
 
 \begin{bibexample}[C556/07]
 \begin{verbatim}
@@ -2649,14 +2661,15 @@ of the \texttt{tabulate} field to do so.
 
 \index[general]{legislation|(}
 The \oscola\ style provides support for citing as `legislation' (a) UK
-Acts of Parliament (and those of the Scottish and Welsh Assemblies and
-the Northern Ireland Parliament), (b) secondary legislation (statutory
-instruments) made in any part of the UK, (c) draft UK primary
-legislation (bills), (d) the treaties establishing
-the \textsc{eu}, (e) legislation made by the \textsc{eu}. It does not
-provide facilities for citing non-UK or \textsc{eu}
-legislation. Rules of Court, though technically legislation, are also
-dealt with separately: see page \ref{courtrules}.
+Acts of Parliament (and those of the Scottish Parliament, Welsh
+Parliament (Senedd Cymru), and the Northern Ireland Assembly), (b)
+secondary legislation (statutory instruments) made in any part of the
+UK, (c) draft UK primary legislation (bills), (d) the treaties
+establishing the \textsc{eu}, (e) legislation made by the
+\textsc{eu}. It does not provide facilities for citing non-UK or
+\textsc{eu} legislation. Rules of Court, though technically
+legislation, are also dealt with separately: see page
+\ref{courtrules}.
 
 \subsection{UK Primary Legislation}
 
@@ -2666,9 +2679,10 @@ dealt with separately: see page \ref{courtrules}.
 \index[general]{legislation!Welsh|see{UK}}
 \index[general]{legislation!Northern Irish|see{UK}}
 \subsubsection{Bibliographical data}
-Primary legislation (that is, UK Acts of Parliament, and the
-equivalent measures of the Scottish and Welsh Assemblies and the
-Northern Ireland Parliament) are cited using the \texttt{@legislation}
+Primary legislation (that is, UK Acts of Parliament, and acts and
+measures of the Scottish Parliament, Welsh Parliament (Senedd Cymru),
+National Assembly for Wales (Cynulliad Cenedlaethol Cymru), and the
+Northern Ireland Assembly) are cited using the \texttt{@legislation}
 type, setting the \texttt{entrysubtype} to \texttt{primary}. The
 relevant fields are as follows.
 \begin{description}
@@ -2714,7 +2728,11 @@ Specify how the \emph{main body} of the legislation
   therefore cited by number alone. (In practice that means a few very
   old acts.) For more recent legislation it will normally be
   ignored. It is also required for Scottish, Welsh or Northern Irish
-  legislation.
+  legislation. For acts of the Scottish Parliament use \texttt{asp};
+  for acts of the Welsh Parliament (Senedd Cymru) use \texttt{asc};
+  for acts of the National Assembly for Wales use \texttt{anaw} (in
+  English) or \texttt{dccc} (in Welsh); for acts of the Northern
+  Ireland Assembly use \texttt{c}.
 \item[note]
 \index[general]{note field@\texttt{note} field!legislation@in legislation}
 \index[general]{bibfile@\texttt{.bib} file!note field@\texttt{note} field}
@@ -2787,7 +2805,14 @@ separately a rather elaborate command to make sure the index is correct: see pag
 \item[\egcite{[4]\{nia1965\}}] \cite[4]{nia1965}
 \end{description}
 
-It is also possible to cite Scottish, Welsh and Northern Irish legislation. Set the keywords appropriately, and include the correct reference in the number field.
+It is also possible to cite Scottish, Welsh and Northern Irish
+legislation. Set the \texttt{keywords} field appropriately
+(\texttt{sc}, \texttt{cy}, or \texttt{ni}), and include the correct
+chapter or session number in the \texttt{number} field.
+
+The following example is a Measure of the National Assembly for Wales
+(the predecessor to the Welsh Parliament / Senedd Cymru), which used
+\texttt{nawm} numbers.
 
 \begin{bibexample}[learner08]
 \begin{verbatim}
@@ -2804,6 +2829,57 @@ It is also possible to cite Scottish, Welsh and Northern Irish legislation. Set 
 
 \begin{description}
 \item[\egcite{\{learner08\}}] \cite{learner08}
+\end{description}
+
+Acts of the National Assembly for Wales use \texttt{anaw} (English
+title) or \texttt{dccc} (Welsh title); acts of the Welsh Parliament
+(Senedd Cymru) use \texttt{asc}.
+
+\begin{bibexample}[transplantation13]
+\begin{verbatim}
+@legislation{transplantation13,
+  title          = {Deddf Trawsblannu Dynol (Cymru)},
+  date           = {2013},
+  number         = {dccc 5},
+  keywords       = {cy},
+  entrysubtype   = {primary},
+  pagination     = {section},
+  language       = {welsh},
+}
+\end{verbatim}
+\end{bibexample}
+
+\begin{bibexample}[abolition20]
+\begin{verbatim}
+@legislation{abolition20,
+  title          = {Child (Abolition of Defence of Reasonable
+                    Punishment) (Wales) Act},
+  date           = {2020},
+  number         = {anaw 3},
+  keywords       = {cy},
+  entrysubtype   = {primary},
+  pagination     = {section},
+}
+\end{verbatim}
+\end{bibexample}
+
+\begin{bibexample}[welshtax22]
+\begin{verbatim}
+@legislation{welshtax22,
+  title          = {Welsh Tax Acts etc (Power to Modify) Act},
+  date           = {2022},
+  number         = {asc 2},
+  keywords       = {cy},
+  entrysubtype   = {primary},
+  pagination     = {section},
+}
+\end{verbatim}
+\end{bibexample}
+
+\begin{description}
+\item[\egcite{\{transplantation13\}}] \cite{transplantation13}
+\item[\egcite{\{abolition20\}}] \cite{abolition20}
+\item[\egcite{\{welshtax22\}}] \cite{welshtax22}
 \end{description}
 \index[general]{legislation!UK!examples|)}
 
@@ -3227,16 +3303,86 @@ ordered chronologically and by number.
 Draft \textsc{eu} legislation is cited using the \texttt{@report}
 entry type, described at page \pageref{drafteu}.
 
+\subsubsection{OJ references without page numbers}
+
+\index[general]{legislation!EU!OJ without page numbers}
+More recent issues of the Official Journal do not carry page numbers.
+In those circumstances, omit the \texttt{pages} and \texttt{volume}
+fields. The citation will give the series letter alone, for example
+`[2025] OJ L'.
+
+\begin{bibexample}[eu2025:tariffs]
+\begin{verbatim}
+@legislation{eu2025:tariffs,
+  title        = {Regulation (EU) 2025/783 of the European
+                  Parliament and of the Council of 14 April
+                  2025 amending Regulation (EU) 2018/196 on
+                  additional customs duties on imports of
+                  certain products originating in the
+                  United States of America},
+  type         = {regulation},
+  entrysubtype = {regulation},
+  number       = {2025/783},
+  journaltitle = {OJ},
+  series       = {L},
+  date         = {2025},
+  keywords     = {eu},
+}
+\end{verbatim}
+\end{bibexample}
+
+\begin{description}
+\item[\egcite{\{eu2025:tariffs\}}] \cite{eu2025:tariffs}
+\end{description}
+
+\subsubsection{Assimilated EU law\label{assimilated}}
+
+\index[general]{assimilated EU law|(}
+After the United Kingdom's departure from the EU, much directly
+applicable EU law was retained in domestic law as `assimilated law'.
+Under OSCOLA~5, such instruments are cited with the prefix
+`Assimilated', and, where they have been amended, a note of the
+amending instrument.
+
+To mark an entry as assimilated, add \texttt{assimilated} to the
+\texttt{keywords} field. If the instrument has been amended, put the
+amending reference in the \texttt{note} field.\index[general]{keywords field@\texttt{keywords} field!assimilated@\texttt{assimilated}}
+
+\begin{bibexample}[rome1assimilated]
+\begin{verbatim}
+@legislation{rome1assimilated,
+  title        = {Regulation (EC) No 593/2008 of the European
+                  Parliament and of the Council of 17 June 2008
+                  on the law applicable to contractual
+                  obligations},
+  type         = {regulation},
+  entrysubtype = {regulation},
+  number       = {593/2008},
+  journaltitle = {OJ},
+  series       = {L},
+  volume       = {177},
+  pages        = {6},
+  date         = {2008},
+  keywords     = {eu, assimilated},
+  note         = {SI 2019/834, reg~10},
+}
+\end{verbatim}
+\end{bibexample}
+
+\begin{description}
+\item[\egcite{\{rome1assimilated\}}] \cite{rome1assimilated}
+\end{description}
+\index[general]{assimilated EU law|)}
+
 \section{Court Rules}
 
 \index[general]{court rules of@court, rules of|(}
 \index[general]{rules of court|(}
 \index[general]{procedure rules|(}
 The\label{courtrules} \oscola\ standard allows you to cite court rules
-(the Civil Procedure Rules, the Rules of the Supreme Court
-and the County Court Rules) in a special way. (I'm not sure it's
-mandatory to do so. And I don't see why the same couldn't apply the
-the Crown Court Rules, but apparently it doesn't.)
+(the Civil Procedure Rules, the Criminal Procedure Rules, the Family
+Procedure Rules, the Rules of the Supreme Court and the County Court
+Rules) in a special way.
 
 In effect, the rules provide for four special cases, and the package
 follows suit. It's probably best not to try to understand them. Just
@@ -3279,17 +3425,49 @@ entrysubtype = {procedure-rule},
 } 
 \end{verbatim}
 \end{bibexample} 
-\begin{bibexample}[ccr] 
+\begin{bibexample}[ccr]
 \begin{verbatim}
-@legislation{ccr, 
-title        = {County Court Rules}, 
+@legislation{ccr,
+title        = {County Court Rules},
 shorttitle   = {CCR},
-keywords     = {en}, 
-pagination   = {rule}, 
+keywords     = {en},
+pagination   = {rule},
 entrysubtype = {procedure-rule}, }
-\end{verbatim} \end{bibexample} Note that strictly speaking the
-\texttt{title} field is not essential; it will not be printed in
-citations (but will be used simply for indexing).
+\end{verbatim} \end{bibexample}
+
+Under OSCOLA~5, the Criminal Procedure Rules and the Family Procedure
+Rules are treated in the same way. Like the RSC and CCR, they are
+cited by rule number, so \texttt{pagination} is set to
+\texttt{rule}:
+
+\begin{bibexample}[crpr2020]
+\begin{verbatim}
+@legislation{crpr2020,
+  title        = {Criminal Procedure Rules},
+  shorttitle   = {CrPR},
+  keywords     = {en},
+  entrysubtype = {procedure-rule},
+  date         = {2020},
+  pagination   = {rule},
+}
+\end{verbatim}
+\end{bibexample}
+\begin{bibexample}[fpr2010]
+\begin{verbatim}
+@legislation{fpr2010,
+  title        = {Family Procedure Rules},
+  shorttitle   = {FPR},
+  keywords     = {en},
+  entrysubtype = {procedure-rule},
+  date         = {2010},
+  pagination   = {rule},
+}
+\end{verbatim}
+\end{bibexample}
+
+Note that strictly speaking the \texttt{title} field is not essential;
+it will not be printed in citations (but will be used simply for
+indexing).
 
 When you come to cite these sources, you need to use a slightly
 different format from the usual. Your postnote should be divided into
@@ -3302,6 +3480,8 @@ you wish to cite.
 \item[\egcite{[24|14A]\{rsc\}}] \cite[24|14A]{rsc}
 \item[\egcite{[17|11]\{ccr\}}] \cite[17|11]{ccr}
 \item[\egcite{[6|4.1]\{pd\}}] \cite[6|4.1]{pd}
+\item[\egcite{[r~17]\{crpr2020\}}] \cite[r~17]{crpr2020}
+\item[\egcite{[r~4.1]\{fpr2010\}}] \cite[r~4.1]{fpr2010}
 \end{description}
 
 Using these postnote fields, rather than doing
@@ -4139,7 +4319,7 @@ The first page (or the pages) of the relevant article. You can give a page range
 
 \index[general]{articles!newspapers@in newspapers}
 \index[general]{newspapers!articles}
-Where an article has appeared in a newspaper, slightly different styling is required. In those circumstances, use the \verb|entrysubtype| of \verb|newspaper|. You may also need to set a \verb|location| field.
+Where an article has appeared in a newspaper, slightly different styling is required. In those circumstances, use the \verb|entrysubtype| of \verb|newspaper|. Under OSCOLA~5, the city of publication is no longer required, so the \texttt{location} field may be omitted.
 \index[general]{articles!entrysubtype field@\texttt{entrysubtype} field!newspaper@\texttt{newspaper}}
 
 \begin{bibexample}[croft]
@@ -4148,7 +4328,6 @@ Where an article has appeared in a newspaper, slightly different styling is requ
   title        = {Supreme Court Warns on Quality},
   author       = {Jane Croft},
   journaltitle = {Financial Times},
-  location     = {London},
   date         = {2010-07-01},
   pages        = {3},
   entrysubtype = {newspaper},
@@ -4204,6 +4383,34 @@ For instance, consider the following example:
 If we just cite the note we get: \cite{rowbottom07}. If we cite both
 case and note in a footnote, we get a different
 format.\footnote{\cite{jameel04}; \cite[see][]{rowbottom07}.}
+
+\subsection{Book Reviews\label{bookreviews}}
+
+\index[general]{book reviews}
+\index[general]{articles!entrysubtype field@\texttt{entrysubtype} field!bookreview@\texttt{bookreview}}
+Book reviews should be entered as \texttt{@article} with the
+\texttt{entrysubtype} set to \texttt{bookreview}. Under OSCOLA~5, the
+annotation `(book review)' will be appended automatically.
+
+\begin{bibexample}[guest:1961]
+\begin{verbatim}
+@article{guest:1961,
+  entrysubtype = {bookreview},
+  author       = {Guest, A G},
+  title        = {An Introduction to the Law of Contract},
+  journaltitle = {MLR},
+  volume       = {24},
+  date         = {1961},
+  pages        = {658},
+}
+\end{verbatim}
+\end{bibexample}
+
+\begin{description}
+\item[\egcite{\{guest:1961\}}] \cite{guest:1961}
+\item[\egcite{\{nolan:2012\}}] \cite{nolan:2012}
+\end{description}
+
 \index[general]{articles|)}
 
 \section{Reports}
@@ -4752,6 +4959,9 @@ papers, emails and interviews in accordance with
 consideration, and so a few examples should suffice.
 
 \index[general]{thesis}
+Under OSCOLA~5, thesis titles are italicised rather than placed in
+quotation marks. This is handled automatically.
+
 \begin{bibexample}[herberg89]
 \begin{verbatim}
 @thesis{herberg89,
@@ -4883,6 +5093,168 @@ websites)\footcite[42]{oscola} use the \texttt{@online} entry type.
 
 \begin{description}
 \item[\egcite{\{cole09\}}] \cite{cole09}
+\end{description}
+
+\subsubsection{Perma.cc URLs}
+
+\index[general]{Perma.cc}
+\index[general]{urldate field@\texttt{urldate} field!Perma.cc suppression}
+Under OSCOLA~5, no access date is needed for permanently archived
+URLs. Where the \texttt{url} field begins with \texttt{perma.cc},
+the `accessed' date will be suppressed automatically, even if a
+\texttt{urldate} is present in the entry.
+
+\begin{bibexample}[cyclefree:2023]
+\begin{verbatim}
+@online{cyclefree:2023,
+  author       = {{Cyclefree}},
+  title        = {Is This Really Necessary, Minister?},
+  journaltitle = {Legal Feminist},
+  date         = {2023-04-27},
+  url          = {https://perma.cc/3THK-P4AX},
+  urldate      = {2023-07-21},
+}
+\end{verbatim}
+\end{bibexample}
+
+\begin{description}
+\item[\egcite{\{cyclefree:2023\}}] \cite{cyclefree:2023}
+\end{description}
+
+\subsubsection{Podcasts}
+
+\index[general]{podcast}
+\index[general]{entrysubtype field@\texttt{entrysubtype} field!podcast@\texttt{podcast}}
+Podcasts should be entered as \texttt{@online} with the
+\texttt{entrysubtype} set to \texttt{podcast}. Where there is a
+named author or host, use the \texttt{author} field; where there is
+no personal author, put the series name in the \texttt{author} field
+(using double braces to prevent name reordering). Use
+\texttt{journaltitle} for the series title if a personal author is
+present. Timestamp pinpoints are passed as postnotes when citing
+(set \texttt{pagination} to \texttt{timestamp} in the entry so they
+are printed as-is).
+
+\begin{bibexample}[doublejeopardy:ep27]
+\begin{verbatim}
+@online{doublejeopardy:ep27,
+  entrysubtype = {podcast},
+  author       = {{Double Jeopardy podcast}},
+  title        = {Episode 27: Dr Bryn Harris -- Free Speech,
+                  Harm and the Internet},
+  date         = {2023-04-07},
+  url          = {https://podcasts.apple.com/gb/podcast/
+                  double-jeopardy/id1633485236?i=1000607857832},
+  urldate      = {2023-07-21},
+  pagination   = {timestamp},
+}
+\end{verbatim}
+\end{bibexample}
+
+\begin{description}
+\item[\egcite{[3:40--3:56]\{doublejeopardy:ep27\}}] \cite[3:40--3:56]{doublejeopardy:ep27}
+\end{description}
+
+\subsubsection{Social media posts}
+
+\index[general]{social media}
+\index[general]{entrysubtype field@\texttt{entrysubtype} field!socialmedia@\texttt{socialmedia}}
+Social media posts should be entered as \texttt{@online} with the
+\texttt{entrysubtype} set to \texttt{socialmedia}. Use
+\texttt{journaltitle} for the platform name and \texttt{note} for
+the time of posting. Where the author is identified only by an
+account handle, put it in the \texttt{author} field using double
+braces to prevent name reordering.
+
+\begin{bibexample}[criminalbar:tweet23]
+\begin{verbatim}
+@online{criminalbar:tweet23,
+  entrysubtype = {socialmedia},
+  author       = {{@The Criminal Bar}},
+  journaltitle = {Twitter},
+  date         = {2023-06-26},
+  note         = {9:13pm GMT+1},
+  url          = {https://perma.cc/HD6K-3GZQ},
+}
+\end{verbatim}
+\end{bibexample}
+
+\begin{description}
+\item[\egcite{\{criminalbar:tweet23\}}] \cite{criminalbar:tweet23}
+\end{description}
+
+\subsubsection{Audio and video: timestamp pinpoints}
+
+\index[general]{timestamp pinpoints}
+\index[general]{pagination field@\texttt{pagination} field!timestamp@\texttt{timestamp}}
+For audio or video material where pinpoint references are to a time
+code rather than a page, set \texttt{pagination} to
+\texttt{timestamp}. The postnote will then be printed as-is (without
+any `p.'\ or `para'\ prefix), placed between the date parenthesis
+and the \textsc{url}. Note that only postnotes on entries with
+\texttt{pagination=timestamp} are treated this way; text postnotes
+on other entries continue to appear at the end of the citation as
+usual.
+
+\begin{bibexample}[uksc:hale19]
+\begin{verbatim}
+@online{uksc:hale19,
+  author       = {{UK Supreme Court}},
+  title        = {Lady Hale's Valedictory Remarks --
+                  18 December 2019},
+  journaltitle = {YouTube},
+  date         = {2019-12-18},
+  url          = {https://perma.cc/7YZV-Y43A},
+  pagination   = {timestamp},
+}
+\end{verbatim}
+\end{bibexample}
+
+\begin{description}
+\item[\egcite{[42:41--51:17]\{uksc:hale19\}}] \cite[42:41--51:17]{uksc:hale19}
+\end{description}
+
+\subsubsection{Generative artificial intelligence}
+
+\index[general]{generative artificial intelligence}
+\index[general]{entrysubtype field@\texttt{entrysubtype} field!ai@\texttt{ai}}
+Under OSCOLA~5, generative AI outputs are cited with the AI model as
+the author. This is a contentious choice, and the material, by definition, is not stable and cannot be looked up by a reader. If you have provided instructions to generate the material, OSCOLA~5 says you may 
+specify those instructions, which can be done in the \texttt{title} field, which will be
+printed in inverted commas preceded by `response to'. Give the name of
+the organisation in the \texttt{publisher} field and the date on which
+the material was generated in the \texttt{date} field.
+
+Use the \texttt{@online} entry type with \texttt{entrysubtype} set to
+\texttt{ai}. No URL is needed; the format does not include one --- presumably due to lack of stability. You may never need this macro but it is here for completeness.
+
+\begin{bibexample}[chatgpt:ai23a]
+\begin{verbatim}
+@online{chatgpt:ai23a,
+  entrysubtype = {ai},
+  author       = {{ChatGPT}},
+  title        = {Explain how artificial intelligence works},
+  publisher    = {OpenAI},
+  date         = {2023-07-16},
+}
+\end{verbatim}
+\end{bibexample}
+
+\begin{bibexample}[chatgpt:ai23b]
+\begin{verbatim}
+@online{chatgpt:ai23b,
+  entrysubtype = {ai},
+  author       = {{ChatGPT}},
+  title        = {How to cite ChatGPT in the style of OSCOLA},
+  publisher    = {OpenAI},
+  date         = {2023-07-16},
+}
+\end{verbatim}
+\end{bibexample}
+
+\begin{description}
+\item[\egcite{\{chatgpt:ai23a\}}] \cite{chatgpt:ai23a}
+\item[\egcite{\{chatgpt:ai23b\}}] \cite{chatgpt:ai23b}
 \end{description}
 
 \index[general]{journals!electronic}
