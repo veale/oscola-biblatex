@@ -13,7 +13,7 @@ further information about coverage see the documentation.
 The package consists of five principal files (`oscola.bbx`, `oscola.cbx`, and three language definition files,
 `english-oscola.lbx`, `british-oscola.lbx`, and `american-oscola.lbx`). There is also a very short index
 style file, `oscola.ist`. Those files are copyright (c) Paul Stanley
-2012-20.
+2012-20. The files have been updated for OSCOLA 5 by Michael Veale.
 
 This work may be distributed and/or modified under the conditions of
 the LaTeX Project Public License, either version 1.3 of this license
@@ -76,3 +76,5 @@ March 2018      Version 1.6    The package has been updated again to take
 
 March 2020      Version 1.7    The package has been updated to take
                                account of changes in Biblatex.
+
+March 2025      Version 2.0    The package has been updated for the requirements of OSCOLA 5th Edition.
