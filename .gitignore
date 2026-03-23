@@ -182,4 +182,5 @@ internaltest.*
 
 #EMACS
 \#*#
-*.*~
+*.*~.vscode/
+.latexmkrc
