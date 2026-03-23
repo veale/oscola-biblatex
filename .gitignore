@@ -184,3 +184,5 @@ internaltest.*
 \#*#
 *.*~.vscode/
 .latexmkrc
+.vscode/
+.latexmkrc
